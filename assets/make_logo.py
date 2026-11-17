@@ -138,9 +138,49 @@ tile.save(f"{OUT}/logo-1024.png")
 for size in (512, 256, 128, 64):
     tile.resize((size, size), Image.LANCZOS).save(f"{OUT}/logo-{size}.png")
 
+def write_ico(path, image, sizes):
+    """ICO classique : images BMP 32 bits (avec masque) jusqu'à 128 px, PNG pour 256 px.
+    Les ICO « tout PNG » de Pillow s'affichent mal dans certains composants Windows."""
+    import io
+    import struct
+    frames = []
+    for size in sizes:
+        img = image.resize((size, size), Image.LANCZOS).convert("RGBA")
+        if size >= 256:
+            buf = io.BytesIO()
+            img.save(buf, format="PNG")
+            frames.append((size, buf.getvalue()))
+            continue
+        header = struct.pack("<IiiHHIIiiII", 40, size, size * 2, 1, 32, 0, 0, 0, 0, 0, 0)
+        px = img.load()
+        xor = bytearray()
+        for y in range(size - 1, -1, -1):  # lignes de bas en haut, BGRA
+            for x in range(size):
+                r, g, b, a = px[x, y]
+                xor += bytes((b, g, r, a))
+        row_bytes = ((size + 31) // 32) * 4
+        and_mask = bytearray()
+        for y in range(size - 1, -1, -1):
+            row = bytearray(row_bytes)
+            for x in range(size):
+                if px[x, y][3] == 0:
+                    row[x // 8] |= 0x80 >> (x % 8)
+            and_mask += row
+        frames.append((size, header + bytes(xor) + bytes(and_mask)))
+    out = bytearray(struct.pack("<HHH", 0, 1, len(frames)))
+    offset = 6 + 16 * len(frames)
+    for size, data in frames:
+        dim = 0 if size >= 256 else size
+        out += struct.pack("<BBBBHHII", dim, dim, 0, 0, 1, 32, len(data), offset)
+        offset += len(data)
+    for _, data in frames:
+        out += data
+    with open(path, "wb") as f:
+        f.write(out)
+
+
 # Icône Windows multi-tailles
-ico_sizes = [16, 20, 24, 32, 40, 48, 64, 96, 128, 256]
-tile.resize((256, 256), Image.LANCZOS).save(f"{OUT}/app.ico", format="ICO", sizes=[(s, s) for s in ico_sizes])
+write_ico(f"{OUT}/app.ico", tile, [16, 20, 24, 32, 40, 48, 64, 96, 128, 256])
 
 # Planche d'aperçu : tailles réelles sur fond clair et sombre
 sheet = Image.new("RGBA", (980, 330), (243, 245, 249, 255))

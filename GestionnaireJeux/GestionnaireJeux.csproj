@@ -12,7 +12,7 @@
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
     <Product>Game Manager</Product>
     <AssemblyTitle>Game Manager</AssemblyTitle>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <!-- Démarre aussi avec .NET 9/10 si le runtime 8 n'est pas installé -->
     <RollForward>Major</RollForward>
     <SatelliteResourceLanguages>fr</SatelliteResourceLanguages>

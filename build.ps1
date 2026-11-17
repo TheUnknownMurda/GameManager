@@ -1,7 +1,7 @@
 ﻿# Builds the app, then the installer (installer\Output\GameManagerInstall.exe).
 # Usage: .\build.ps1 [-Version 1.0.0]
 param(
-    [string]$Version = '1.0.0',
+    [string]$Version = '1.0.1',
     [string]$RepoUrl = 'https://github.com/TheUnknownMurda/GameManager'
 )
 $ErrorActionPreference = 'Stop'

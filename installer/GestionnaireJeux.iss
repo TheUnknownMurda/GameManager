@@ -4,7 +4,7 @@
 #define AppName "Game Manager"
 #define AppExe "GestionnaireJeux.exe"
 #ifndef AppVersion
-  #define AppVersion "1.0.0"
+  #define AppVersion "1.0.1"
 #endif
 #ifndef AppUrl
   #define AppUrl "https://github.com/TheUnknownMurda/GameManager"
@@ -63,10 +63,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\dist\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
+; Icône dédiée aux raccourcis : un chemin distinct évite que Windows affiche une ancienne icône en cache
+Source: "..\GestionnaireJeux\Assets\app.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{autoprograms}\{cm:ShortcutName}"; Filename: "{app}\{#AppExe}"; Comment: "{cm:ShortcutComment}"
-Name: "{autodesktop}\{cm:ShortcutName}"; Filename: "{app}\{#AppExe}"; Comment: "{cm:ShortcutComment}"; Tasks: desktopicon
+Name: "{autoprograms}\{cm:ShortcutName}"; Filename: "{app}\{#AppExe}"; IconFilename: "{app}\app.ico"; Comment: "{cm:ShortcutComment}"
+Name: "{autodesktop}\{cm:ShortcutName}"; Filename: "{app}\{#AppExe}"; IconFilename: "{app}\app.ico"; Comment: "{cm:ShortcutComment}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{cm:ShortcutName}}"; Flags: nowait postinstall skipifsilent
