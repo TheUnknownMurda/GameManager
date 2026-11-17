@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>GestionnaireJeux</AssemblyName>
+    <RootNamespace>GestionnaireJeux</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <Product>Game Manager</Product>
+    <AssemblyTitle>Game Manager</AssemblyTitle>
+    <Version>1.0.0</Version>
+    <!-- Démarre aussi avec .NET 9/10 si le runtime 8 n'est pas installé -->
+    <RollForward>Major</RollForward>
+    <SatelliteResourceLanguages>fr</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);SYSLIB1054;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+    <Resource Include="Assets\logo.png" />
+  </ItemGroup>
+
+</Project>
